@@ -9,6 +9,8 @@ class Program
         Console.WriteLine("1-Calcular tempo com grandes entradas\n2-Visualizar pilha");
         Console.Write("Selecione uma opção: ");
         int escolha = int.Parse(Console.ReadLine());
+        Console.Clear();
+
         if (escolha == 1)
         {
             Pilha p = new Pilha(1000000);
@@ -48,16 +50,17 @@ class Program
             Console.WriteLine("Antes de testar o programa,\ninforme um valor inicial para a capacidade da pilha");
             Console.Write("Capacidade = ");
 
-            int x = int.Parse(Console.ReadLine());
-            if (x <= 0) throw new Exception("Valor invalido!");
+            int cap = int.Parse(Console.ReadLine());
+            if (cap <= 0) throw new Exception("Valor invalido!");
 
-            Pilha p = new Pilha(x);
+            Pilha p = new Pilha(cap);
 
             Console.Clear();
             while (true)
             {
-                Console.WriteLine("1-Push\n2-Pop\n3-Show\n4-Size\n5-Empty\n6-Top\n7-Capacity\n8-Clear");
+                Console.WriteLine("1-Push\n2-Pop\n3-Show\n4-Size\n5-Is Empty?\n6-Top\n7-Capacity\n8-Empty\n9-Clear");
                 Console.Write("Selecione uma opção: ");
+                int x = 0;
                 try{
                     x = int.Parse(Console.ReadLine());
                 }catch (Exception ex){
@@ -95,6 +98,11 @@ class Program
                         Console.WriteLine();
                         break;
                     case 8:
+                        p.Empty(cap);
+                        Console.WriteLine("Pilha esvaziada!");
+                        Console.WriteLine();
+                        break;
+                    case 9:
                         Console.Clear();
                         break;
                 }
@@ -107,11 +115,11 @@ class Pilha
 {
     private object[] array;
     private int topo;
-    private int capacide;
+    private int capacidade;
     public Pilha(int tam)
     {
         array = new object[tam];
-        capacide = tam;
+        capacidade = tam;
         topo = -1;
     }
     
@@ -134,12 +142,12 @@ class Pilha
     
     public void Push(object obj)
     {
-        if (topo == capacide - 1)
+        if (topo == capacidade - 1)
         {
             // Estrategia de duplicação
             // Testar as outras estrategias
-            capacide *= 2;
-            object[] arrayAux = new object[capacide];
+            capacidade *= 2;
+            object[] arrayAux = new object[capacidade];
             
             for (int i = 0; i < topo; i++)
             {
@@ -176,7 +184,19 @@ class Pilha
 
     public int Capacity()
     {
-        return capacide;
+        return capacidade;
+    }
+
+    public void Empty(int capacidade)
+    {
+
+        object[] novoArray = new object[capacidade];
+
+        array = novoArray;
+        novoArray = null;
+
+        topo = -1;
+        this.capacidade = capacidade;
     }
 
 }
