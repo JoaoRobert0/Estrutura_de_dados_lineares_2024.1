@@ -5,19 +5,22 @@ class Program
 {
     static void Main(string[] args)
     {
-        PilhaRubroNegra prb = new PilhaRubroNegra(8);
+        Console.Clear();
+
+        // Instanciando a pilha e definindo tamanho inicial
+        PilhaRubroNegra prb = new PilhaRubroNegra(1);
 
         int comando = 0;
         while (comando != 99)
         {
             // Interface do usuario
             Console.WriteLine(
-                "Menu\n" +
+                "------Menu-----\n" +
                 "1-Listar\n" +
                 "2-Push Vermelho\n" +
-                "3-Push Preta\n" +
-                "4-Pop Vermelho\n" +
-                "5-Pop Preta");
+                "3-Pop Vermelho\n" +
+                "4-Push Preto\n" +
+                "5-Pop Preto");
 
             Console.Write("Selecione o valor da operação desejada: ");
             comando = int.Parse(Console.ReadLine());
@@ -52,34 +55,32 @@ class Program
                     Console.Clear();
                     break;
 
-                // Push preta
+                // Pop Vermelho
                 case 3:
-                    Console.WriteLine("PUSH PRETA");
-                    Console.Write("Digite o objeto a ser inserido: ");
-
-                    prb.PushPreta(Console.ReadLine());
-
-                    Thread.Sleep(1000);
-                    Console.Clear();
-                    
-                    break;
-                
-                // Pop preta
-                case 4:
-                    Console.WriteLine("POP PRETA");
-
-                    Console.Write($"Valor removido foi: {prb.PopPreta()}");
-
-                    Thread.Sleep(1000);
-                    Console.Clear();
-
-                    break;
-
-                // Pop vermelho
-                case 5:
                     Console.WriteLine("POP VERMELHO");
 
                     Console.Write($"Valor removido foi: {prb.PopVermelho()}");
+
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    break;
+                
+                // Push Preto
+                case 4:
+                    Console.WriteLine("PUSH PRETO");
+                    Console.Write("Digite o objeto a ser inserido: ");
+
+                    prb.PushPreto(Console.ReadLine());
+
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    break;
+                
+                // Pop preto
+                case 5:
+                    Console.WriteLine("POP PRETO");
+
+                    Console.Write($"Valor removido foi: {prb.PopPreto()}");
 
                     Thread.Sleep(1000);
                     Console.Clear();
@@ -96,37 +97,78 @@ class PilhaRubroNegra
 {
     private object[] array;
     private int topVermelho;
-    private int topPreta;
-    public PilhaRubroNegra(int tamanho)
+    private int topPreto;
+    private int capacidade;
+
+    public PilhaRubroNegra(int capacidade)
     {
-        array = new object[tamanho];
+        array = new object[capacidade];
         topVermelho = -1;
-        topPreta = tamanho;
+        topPreto = capacidade;
+        this.capacidade = capacidade;
     }
 
     public void PushVermelho(object valor)
     {
+        // Vermelho chegou no final do array, ou seja, não houve pushPreto
+        if (topVermelho == capacidade - 1)
+        {
+            object[] novoArray = new object[capacidade *= 2];
+
+            for (int i = 0; i <= topVermelho; i++)
+            {
+                novoArray[i] = array[i];
+            }
+
+            // Começara a partir do fim do novo array
+            topPreto = capacidade;
+
+            array = novoArray;
+        }
         topVermelho++;
         array[topVermelho] = valor;
     }
 
-    public void PushPreta(object valor)
+    public void PushPreto(object valor)
     {
-        topPreta--;
-        array[topPreta] = valor;
+        // Quando o topPreto chegar no inicio do array
+        if (topPreto == 0)
+        {
+            int antigaCapacidade = capacidade;
+            object[] novoArray = new object[capacidade *= 2];
+
+            for (int i = capacidade - 1; i >= capacidade / 2; i--)
+            {
+                antigaCapacidade--;
+                novoArray[i] = array[antigaCapacidade];
+            }
+
+            // Ele ira começar a partir da antiga capacidade
+            topPreto = capacidade / 2;
+
+            array = novoArray;
+        }
+        topPreto--;
+        array[topPreto] = valor;
     }
 
     public object PopVermelho()
     {
+        // Adicionar excessao
         object auxiliar = array[topVermelho];
+        // Atribuição para null para exibir "corretamente" o array
+        array[topVermelho] = null;
         topVermelho--;
         return auxiliar;
     }
 
-    public object PopPreta()
+    public object PopPreto()
     {
-        object auxiliar = array[topPreta];
-        topPreta--;
+        // Adicionar excessao
+        object auxiliar = array[topPreto];
+        // Atribuição para null para exibir "corretamente" o array
+        array[topPreto] = null;
+        topPreto++;
         return auxiliar;
     }
 
