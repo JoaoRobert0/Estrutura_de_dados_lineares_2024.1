@@ -172,6 +172,28 @@ class PilhaRubroNegra
 
             array = novoArray;
         }
+
+        // topPreto encostou com o topVermelho
+        else if (topPreto == topVermelho + 1)
+        {
+            int antigaCapacidade = capacidade;
+            object[] novoArray = new object[capacidade *= 2];
+
+            for (int i = 0; i <= topVermelho; i++)
+            {
+                novoArray[i] = array[i];
+            }
+
+            topPreto = capacidade - sizePreto;
+
+            for (int i = capacidade - 1; i >= topPreto; i--)
+            {
+                antigaCapacidade--;
+                novoArray[i] = array[antigaCapacidade];
+            }
+
+            array = novoArray;
+        }
         topPreto--;
         sizePreto++;
         array[topPreto] = valor;
