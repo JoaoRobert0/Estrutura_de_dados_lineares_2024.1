@@ -8,7 +8,7 @@ class Program
         Console.Clear();
 
         // Instanciando a pilha e definindo tamanho inicial
-        PilhaRubroNegra prb = new PilhaRubroNegra(1);
+        PilhaRubroNegra prb = new PilhaRubroNegra(4);
 
         int comando = 0;
         while (comando != 99)
@@ -99,6 +99,8 @@ class PilhaRubroNegra
     private int topVermelho;
     private int topPreto;
     private int capacidade;
+    private int sizeVermelho = 0;
+    private int sizePreto = 0;
 
     public PilhaRubroNegra(int capacidade)
     {
@@ -125,7 +127,29 @@ class PilhaRubroNegra
 
             array = novoArray;
         }
+
+        else if (topVermelho == topPreto - 1)
+        {
+            int antigaCapacidade = capacidade;
+            object[] novoArray = new object[capacidade *= 2];
+
+            for (int i = 0; i <= topVermelho; i++)
+            {
+                novoArray[i] = array[i];
+            }
+
+            topPreto = capacidade - sizePreto;
+
+            for (int i = capacidade - 1; i >= topPreto; i--)
+            {
+                antigaCapacidade--;
+                novoArray[i] = array[antigaCapacidade];
+            }
+
+            array = novoArray;
+        }
         topVermelho++;
+        sizeVermelho++;
         array[topVermelho] = valor;
     }
 
@@ -149,6 +173,7 @@ class PilhaRubroNegra
             array = novoArray;
         }
         topPreto--;
+        sizePreto++;
         array[topPreto] = valor;
     }
 
@@ -158,6 +183,7 @@ class PilhaRubroNegra
         object auxiliar = array[topVermelho];
         // Atribuição para null para exibir "corretamente" o array
         array[topVermelho] = null;
+        sizeVermelho--;
         topVermelho--;
         return auxiliar;
     }
@@ -168,6 +194,7 @@ class PilhaRubroNegra
         object auxiliar = array[topPreto];
         // Atribuição para null para exibir "corretamente" o array
         array[topPreto] = null;
+        sizePreto--;
         topPreto++;
         return auxiliar;
     }
