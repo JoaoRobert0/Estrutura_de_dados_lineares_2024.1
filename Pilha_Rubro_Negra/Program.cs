@@ -32,13 +32,18 @@ class Program
             {
                 // Listar
                 case 1:
+                    Console.WriteLine($"Capacidade: {prb.GetCapacity()}");
+                    Console.WriteLine($"Tamanho pilha vermelha: {prb.GetSizeVermelho()}");
+                    Console.WriteLine($"Tamanho pilha preta: {prb.GetSizePreto()}");
+
                     foreach (object elemento in prb.Listar())
                     {
                         Thread.Sleep(250);
                         if (elemento == null) Console.Write("# ");
                         else Console.Write($"{elemento} ");
                     }
-                    Console.WriteLine();
+                    Console.Write("\n\nPresione qualquer tecla para sair: ");
+                    Console.ReadLine();
 
                     Thread.Sleep(1000);
                     Console.Clear();
@@ -224,5 +229,20 @@ class PilhaRubroNegra
     public object[] Listar()
     {
         return array;
+    }
+
+    public int GetCapacity()
+    {
+        return capacidade;
+    }
+
+    public int GetSizeVermelho()
+    {
+        return sizeVermelho;
+    }
+
+   public int GetSizePreto()
+    {
+        return sizePreto;
     }
 }
