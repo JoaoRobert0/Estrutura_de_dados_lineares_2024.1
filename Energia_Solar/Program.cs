@@ -5,10 +5,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        // {8,6,10,4,1,5,3}
+        // Entradas do enunciado
         // {3, 6, 2, 7, 5}
-        // Coleguinha, informe o array na definição das casas
-        List<int> casas = new List<int>(){8,6,10,4,1,5,3};
+        // {8, 6, 10, 4, 1, 5, 3}
+
+        // Coleguinha, informe o conjuto na definição de casas
+        List<int> casas = new List<int>(){3, 6, 2, 7, 5};
         List<Pilha> linhas = new List<Pilha>();
 
         while (casas.Count > 0)
@@ -97,21 +99,19 @@ class Program
     }
 }
 
+// Implementação da minha Pilha
 class Pilha
 {
     private object[] array;
     private int topo;
-    private int capacidade = 8;
+    private int capacidade = 1;
     public Pilha()
     {
         array = new object[capacidade];
         topo = -1;
     }
     
-    public int Size()
-    {
-        return topo + 1;
-    }
+    public int Size() { return topo + 1; }
 
     public bool IsEmpty()
     {
@@ -129,12 +129,10 @@ class Pilha
     {
         if (topo == capacidade - 1)
         {
-            // Estrategia de duplicação
-            // Testar as outras estrategias
             capacidade *= 2;
             object[] arrayAux = new object[capacidade];
             
-            for (int i = 0; i < topo; i++)
+            for (int i = 0; i <= topo; i++)
             {
                 arrayAux[i] = array[i];
             }
@@ -154,11 +152,24 @@ class Pilha
     public object Pop()
     {
         if (topo == -1) throw new Exception("Não é possivel remover um elemnto, pois a pilha está vazia");
+
+        else if (Size() == capacidade * 0.25)
+        {
+            capacidade /= 2;
+            object[] arrayAux = new object[capacidade];
+
+            for (int i = 0; i <= topo; i++)
+            {
+                arrayAux[i] = array[i];
+            }
+
+            array = arrayAux;
+        }
+
         topo--;
         return array[topo + 1];
     }
     
-    // Metodos auxiliares
     public void Show()
     {
         Console.Write("[");
@@ -170,10 +181,7 @@ class Pilha
         Console.WriteLine("]");
     }
 
-    public int Capacity()
-    {
-        return capacidade;
-    }
+    public int Capacity() { return capacidade; }
 
     public void Empty(int capacidade)
     {
@@ -186,5 +194,4 @@ class Pilha
         topo = -1;
         this.capacidade = capacidade;
     }
-
 }
