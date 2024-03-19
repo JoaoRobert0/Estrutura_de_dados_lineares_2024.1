@@ -150,7 +150,6 @@ class Pilha
 
             array = arrayAux;
         }
-
         topo--;
         return array[topo + 1];
     }
