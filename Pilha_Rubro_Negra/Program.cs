@@ -8,19 +8,25 @@ class Program
         Console.Clear();
 
         // Instanciando a pilha e definindo tamanho inicial
-        PilhaRubroNegra prb = new PilhaRubroNegra(4);
+        PilhaRubroNegra prb = new PilhaRubroNegra();
 
         int comando = 0;
         while (comando != 99)
         {
             // Interface do usuario
             Console.WriteLine(
-                "------Menu-----\n" +
+                "--------Menu--------\n" +
                 "1-Listar\n" +
                 "2-Push Vermelho\n" +
                 "3-Pop Vermelho\n" +
-                "4-Push Preto\n" +
-                "5-Pop Preto");
+                "4-Top Vermelho\n" +
+                "5-Push Preto\n" +
+                "6-Pop Preto\n" +
+                "7-Top Preto\n" +
+                "--------------------\n" +
+                "99-Sair\n" +
+                "--------------------"
+            );
 
             Console.Write("Selecione o valor da operação desejada: ");
             comando = int.Parse(Console.ReadLine());
@@ -49,7 +55,7 @@ class Program
                     Console.Clear();
                     break;
                 
-                // Push vermelho
+                // Push Vermelho
                 case 2:
                     Console.WriteLine("PUSH VERMELHO");
                     Console.Write("Digite o objeto a ser inserido: ");
@@ -70,8 +76,17 @@ class Program
                     Console.Clear();
                     break;
                 
-                // Push Preto
+                // Top Vermelho
                 case 4:
+                    Console.WriteLine("TOP VERMELHO");
+                    Console.WriteLine($"O top vermelho é: {prb.TopVermelho()}");
+
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    break;    
+
+                // Push Preto
+                case 5:
                     Console.WriteLine("PUSH PRETO");
                     Console.Write("Digite o objeto a ser inserido: ");
 
@@ -81,11 +96,20 @@ class Program
                     Console.Clear();
                     break;
                 
-                // Pop preto
-                case 5:
+                // Pop Preto
+                case 6:
                     Console.WriteLine("POP PRETO");
 
                     Console.Write($"Valor removido foi: {prb.PopPreto()}");
+
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    break;
+
+                // Top Preto
+                case 7:
+                    Console.WriteLine("TOP PRETO");
+                    Console.WriteLine($"O top preto é: {prb.TopPreto()}");
 
                     Thread.Sleep(1000);
                     Console.Clear();
@@ -103,16 +127,15 @@ class PilhaRubroNegra
     private object[] array;
     private int topVermelho;
     private int topPreto;
-    private int capacidade;
+    private int capacidade = 1;
     private int sizeVermelho = 0;
     private int sizePreto = 0;
 
-    public PilhaRubroNegra(int capacidade)
+    public PilhaRubroNegra()
     {
         array = new object[capacidade];
         topVermelho = -1;
         topPreto = capacidade;
-        this.capacidade = capacidade;
     }
 
     public void PushVermelho(object valor)
@@ -206,7 +229,10 @@ class PilhaRubroNegra
 
     public object PopVermelho()
     {
-        // Adicionar excessao
+        if (topVermelho == -1) throw new Exception(
+            "Não é possivel remover um elemento" +
+            ", pois a pilha vermelha está vazia"
+        );
         object auxiliar = array[topVermelho];
         // Atribuição para null para exibir "corretamente" o array
         array[topVermelho] = null;
@@ -217,7 +243,10 @@ class PilhaRubroNegra
 
     public object PopPreto()
     {
-        // Adicionar excessao
+        if (topPreto == capacidade) throw new Exception(
+            "Não é possivel remover um elemento" +
+            ", pois a pilha preta está vazia"
+        );
         object auxiliar = array[topPreto];
         // Atribuição para null para exibir "corretamente" o array
         array[topPreto] = null;
@@ -226,23 +255,29 @@ class PilhaRubroNegra
         return auxiliar;
     }
 
-    public object[] Listar()
+    public object TopVermelho()
     {
-        return array;
+        if (topVermelho == -1) throw new Exception(
+            "Não é possivel visualizar elemento, " +
+            "pois a pilha vermelha está vazia"
+        );
+        return array[topVermelho];
     }
 
-    public int GetCapacity()
+    public object TopPreto()
     {
-        return capacidade;
+        if (topVermelho == -1) throw new Exception(
+            "Não é possivel visualizar elemento, " +
+            "pois a pilha preta está vazia"
+        );
+        return array[topPreto];
     }
 
-    public int GetSizeVermelho()
-    {
-        return sizeVermelho;
-    }
+    public object[] Listar() { return array;}
 
-   public int GetSizePreto()
-    {
-        return sizePreto;
-    }
+    public int GetCapacity() { return capacidade; }
+
+    public int GetSizeVermelho() { return sizeVermelho; }
+
+   public int GetSizePreto(){ return sizePreto; }
 }
