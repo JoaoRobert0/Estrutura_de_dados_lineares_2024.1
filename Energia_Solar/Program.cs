@@ -5,7 +5,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<int> casas = new List<int>(){3, 6, 2, 7, 5};
+        // {8,6,10,4,1,5,3}
+        // {3, 6, 2, 7, 5}
+        // Coleguinha, informe o array na definição das casas
+        List<int> casas = new List<int>(){8,6,10,4,1,5,3};
         List<Pilha> linhas = new List<Pilha>();
 
         while (casas.Count > 0)
@@ -28,46 +31,65 @@ class Program
             {
                 if (casas[0] > casas[1])
                 {
-                }
-                else if (casas[0] < casas[1])
-                {
+                    List<int> removerIndices = new List<int>();
+                    removerIndices.Add(0);
                     Pilha pilha = new Pilha();
-                    pilha.Push(casas[1]);
+                    pilha.Push(casas[0]);
 
-                    for (int i = 2; i < casas.Count < i++)
+                    for (int i = 1; i < casas.Count; i++)
                     {
                         // Se o atual for menor que o anterior,
                         // entrar na linha de força
                         if (casas[i] < casas[i - 1])
                         {
                             pilha.Push(casas[i]);
+                            removerIndices.Add(i);
                         }
+                    }
+
+                    // Removendo as casas a partir dos indices de *removerIndices*
+                    for (int i = removerIndices.Count - 1; i >= 0; i--)
+                    {
+                        casas.RemoveAt(removerIndices[i]);
                     }
 
                     // Linha finalizada
                     linhas.Add(pilha);
+                }
+                else if (casas[0] < casas[1])
+                {
+                    List<int> removerIndices = new List<int>();
+                    removerIndices.Add(1);
+                    Pilha pilha = new Pilha();
+                    pilha.Push(casas[1]);
 
-                    // Removendo de casas os elementos que foram adicionados na linha
-                    // O(n^2) nem um pouco perfomatico
-                    // int inseridos = pilha.Size();
-                    // while (inseridos > 0)
-                    // {
-                    //     for (int i = 0; i < pilha.Size(); i++)
-                    //     {
-                    //         for (int j = casas.Count - 1; j >= 0; j--)
-                    //         {
-                    //             if (pilha.Top() == casas[j])
-                    //         }
-                    //     }
-                    // }
+                    for (int i = 2; i < casas.Count; i++)
+                    {
+                        // Se o atual for menor que o anterior,
+                        // entrar na linha de força
+                        if (casas[i] < casas[i - 1])
+                        {
+                            pilha.Push(casas[i]);
+                            removerIndices.Add(i);
+                        }
+                    }
+
+                    // Removendo as casas a partir dos indices de *removerIndices*
+                    for (int i = removerIndices.Count - 1; i >= 0; i--)
+                    {
+                        casas.RemoveAt(removerIndices[i]);
+                    }
+
+                    // Linha finalizada
+                    linhas.Add(pilha);
                 }
             }
         }
 
-        int i = 0;
+        int counter = 0;
         foreach (Pilha aux in linhas)
         {
-            Console.WriteLine($"Linha de força {++i}:");
+            Console.WriteLine($"Linha de força {++counter}:");
             aux.Show();
             Console.WriteLine();
         }
@@ -79,7 +101,7 @@ class Pilha
 {
     private object[] array;
     private int topo;
-    private int capacidade = 1;
+    private int capacidade = 8;
     public Pilha()
     {
         array = new object[capacidade];
