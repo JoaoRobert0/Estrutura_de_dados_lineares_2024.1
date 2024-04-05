@@ -9,7 +9,7 @@ class Program
         v.InsertAtRank(1,5);
         v.InsertAtRank(2,7);
         v.InsertAtRank(3,22);
-        v.InsertAtRank(3, 33);
+        v.InsertAtRank(4, 11);
         Console.WriteLine(v);
         Console.WriteLine(v.head.GetElement());
         Console.WriteLine(v.tail.GetElement());
@@ -26,6 +26,31 @@ class Vetor
         head = tail;
         tail = head;
         size = 0;
+    }
+    public object ElementAtRank(int r)
+    {
+        if (r >= 0 && r < Size())
+        {
+            if (r <= Size()/2)
+            {
+                Node aux = head;
+                for (int i = 0; i < r; i++)
+                {
+                    aux = aux.GetNext();
+                }
+                return aux.GetElement();
+            }
+            else
+            {
+                Node aux = tail;
+                for (int i = Size() - 1; i > r; i--)
+                {
+                    aux = aux.GetPrevious();
+                }
+                return aux.GetElement();
+            }
+        }
+        else throw new Exception("Index out of range.");
     }
     public void InsertAtRank(int r, object o)
     {
