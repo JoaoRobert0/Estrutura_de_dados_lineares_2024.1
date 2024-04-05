@@ -26,6 +26,27 @@ class Vetor
         tail = head;
         size = 0;
     }
+    public object RemoveAtRank(int r)
+    {
+        if (r >= 0 && r < Size())
+        {
+            if (IsEmpty())
+            {
+                return throw new Exception("Dont is possible remove because no have elements");
+            }
+            else if (Size() == 1)
+            {
+                head = tail;
+                tail = head;
+            }
+            else if (r == 0)
+            {
+                
+            }
+            size--;
+        }
+        else throw new Exception("Index out of range.");
+    }
     public object ReplaceAtRank(int r, object o)
     {
         if (r >= 0 && r < Size())
