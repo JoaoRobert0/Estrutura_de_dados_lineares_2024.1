@@ -8,7 +8,7 @@ class Program
         v.InsertAtRank(0,10);
         v.InsertAtRank(1, 5);
         v.InsertAtRank(2, 7);
-        v.Show();
+        Console.WriteLine(v);
     }
 }
 
@@ -61,15 +61,21 @@ class Vetor
         return false;
     }
     public int Size() { return size; }
-    public void Show()
+    public override string ToString()
     {
         Node aux = head;
-        for (int i = 0; i < Size(); i++)
+        string s = "[";
+        if (Size() > 0) s += aux.GetElement().ToString();
+        if (Size() > 1)
         {
-            Console.Write($"{i} ");
-            Console.WriteLine(aux.GetElement());
-            aux = aux.GetNext();
+            for (int i = 1; i < Size(); i++)
+            {
+                aux = aux.GetNext();
+                s += ", " + aux.GetElement().ToString();
+            }
         }
+        s += "]";
+        return s;
     }
 }
 
