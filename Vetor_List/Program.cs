@@ -5,27 +5,55 @@ class Program
     static void Main()
     {
         Vetor v = new Vetor();
-        v.InsertAtRank(0,10);
-        v.InsertAtRank(1,5);
-        v.InsertAtRank(2,7);
-        v.InsertAtRank(3,22);
-        v.InsertAtRank(4, 11);
+        v.InsertAtRank(0, 10);
+        v.InsertAtRank(1, 20);
+        v.InsertAtRank(0, 30);
+        v.InsertAtRank(3, 40);
         Console.WriteLine(v);
-        Console.WriteLine(v.head.GetElement());
-        Console.WriteLine(v.tail.GetElement());
+        Console.WriteLine(v.ReplaceAtRank(3, 99));
+        Console.WriteLine(v);
     }
 }
 
 class Vetor
 {
     private int size;
-    public Node head;
-    public Node tail;
+    private Node head;
+    private Node tail;
     public Vetor()
     {
         head = tail;
         tail = head;
         size = 0;
+    }
+    public object ReplaceAtRank(int r, object o)
+    {
+        if (r >= 0 && r < Size())
+        {
+            object oldElemnt;
+            if (r <= Size()/2)
+            {
+                Node aux = head;
+                for (int i = 0; i < r; i++)
+                {
+                    aux = aux.GetNext();
+                }
+                oldElemnt = aux.GetElement();
+                aux.SetElement(o);
+            }
+            else
+            {
+                Node aux = tail;
+                for (int i = Size() - 1; i > r; i--)
+                {
+                    aux = aux.GetPrevious();
+                }
+                oldElemnt = aux.GetElement();
+                aux.SetElement(o);
+            }
+            return oldElemnt;
+        }
+        else throw new Exception("Index out of range.");
     }
     public object ElementAtRank(int r)
     {
