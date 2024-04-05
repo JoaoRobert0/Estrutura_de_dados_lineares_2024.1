@@ -6,17 +6,21 @@ class Program
     {
         Vetor v = new Vetor();
         v.InsertAtRank(0,10);
-        v.InsertAtRank(1, 5);
-        v.InsertAtRank(2, 7);
+        v.InsertAtRank(1,5);
+        v.InsertAtRank(2,7);
+        v.InsertAtRank(3,22);
+        v.InsertAtRank(3, 33);
         Console.WriteLine(v);
+        Console.WriteLine(v.head.GetElement());
+        Console.WriteLine(v.tail.GetElement());
     }
 }
 
 class Vetor
 {
     private int size;
-    private Node head;
-    private Node tail;
+    public Node head;
+    public Node tail;
     public Vetor()
     {
         head = tail;
@@ -45,12 +49,36 @@ class Vetor
                 newNode.SetPrevious(tail);
                 tail = newNode;
             }
-            // else if (r <= Size()/2)
-            // {
-            // }
-            // else if (r > Size()/2)
-            // {
-            // }
+            else if (r <= Size()/2)
+            {
+                Node aux1 = head;
+                for (int i = 0; i < r; i++)
+                {
+                    aux1 = aux1.GetNext(); //Aux stop at index "r"
+                }
+                Node aux2 = aux1.GetPrevious();
+                
+                aux1.SetPrevious(newNode);
+                aux2.SetNext(newNode);
+
+                newNode.SetNext(aux1);
+                newNode.SetPrevious(aux2);
+            }
+            else //(r > Size()/2)
+            {
+                Node aux1 = tail;
+                for (int i = Size(); i > r; i--)
+                {
+                    aux1 = aux1.GetPrevious();
+                }
+                Node aux2 = aux1.GetNext();
+                
+                aux1.SetNext(newNode);
+                aux2.SetPrevious(newNode);
+
+                newNode.SetPrevious(aux1);
+                newNode.SetNext(aux2);
+            }
             size++;
         }
         else throw new Exception("Index out of range.");
